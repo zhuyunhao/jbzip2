@@ -154,7 +154,7 @@ public class TestBZip2OutputStream {
 	 * @throws IOException 
 	 */
 	@Test
-	public void testHeadlerless() throws IOException {
+	public void testHeaderless() throws IOException {
 
 		byte[] testData = "Mary had a little lamb, its fleece was white as snow".getBytes();
 
@@ -1042,6 +1042,63 @@ public class TestBZip2OutputStream {
 		}
 
 		fail();
+
+	}
+
+
+	/**
+	 * @throws IOException 
+	 */
+	@Test
+	public void testDecompressionBug1() throws IOException {
+
+		byte[] testData = new byte [49];
+
+		// Create test block
+		for (int i = 0; i < testData.length; i++) {
+			testData[i] = (byte)i;
+		}
+
+		// Compress
+		ByteArrayOutputStream byteOutput = new ByteArrayOutputStream();
+		BZip2OutputStream output = new BZip2OutputStream (byteOutput);
+		output.write (testData);
+		output.close();
+
+		// Decompress
+		ByteArrayInputStream byteInput = new ByteArrayInputStream (byteOutput.toByteArray());
+		BZip2InputStream input = new BZip2InputStream (byteInput, false);
+		byte[] decodedTestData = new byte [testData.length];
+		input.read (decodedTestData, 0, decodedTestData.length);
+
+		// Compare
+		assertArrayEquals (testData, decodedTestData);
+		assertEquals (-1, input.read());
+
+	}
+
+
+	/**
+	 * @throws IOException 
+	 */
+	@Test
+	public void testDecompressionBug2() throws IOException {
+
+		byte[] testData = new byte [0];
+
+		// Compress
+		ByteArrayOutputStream byteOutput = new ByteArrayOutputStream();
+		BZip2OutputStream output = new BZip2OutputStream (byteOutput);
+		output.write (testData);
+		output.close();
+
+		// Decompress
+		ByteArrayInputStream byteInput = new ByteArrayInputStream (byteOutput.toByteArray());
+		BZip2InputStream input = new BZip2InputStream (byteInput, false);
+
+		// Compare
+		assertEquals (-1, input.read());
+		assertEquals (-1, input.read());
 
 	}
 
