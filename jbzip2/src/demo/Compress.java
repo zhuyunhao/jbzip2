@@ -33,6 +33,7 @@ import java.io.OutputStream;
 
 import org.itadaki.bzip2.BZip2OutputStream;
 
+
 /**
  * A BZip2 file compressor. For demonstration purposes only
  */
