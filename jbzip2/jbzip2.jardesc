@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="MacRoman" standalone="no"?>
 <jardesc>
-    <jar path="jbzip2/jbzip2-0.9.jar"/>
+    <jar path="jbzip2/jbzip2-0.9.1.jar"/>
     <options buildIfNeeded="true" compress="true" descriptionLocation="/jbzip2/jbzip2.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
     <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
     <selectedProjects/>
