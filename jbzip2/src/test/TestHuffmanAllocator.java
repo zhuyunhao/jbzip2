@@ -3,6 +3,7 @@ package test;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.util.Arrays;
 
 import org.itadaki.bzip2.HuffmanAllocator;
@@ -163,5 +164,19 @@ public class TestHuffmanAllocator {
 
 	}
 
+
+	/**
+	 * Pointless test to bump coverage to 100%
+	 * @throws Exception  
+	 */
+	@Test
+	public void testPointlessConstructorTestCoverage() throws Exception {
+
+		Constructor<?> c[] = HuffmanAllocator.class.getDeclaredConstructors();
+
+		c[0].setAccessible (true);
+		c[0].newInstance ((Object[])null);
+
+	}
 
 }
