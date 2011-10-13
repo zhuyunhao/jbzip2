@@ -198,6 +198,24 @@ public class TestBitOutputStream {
 	}
 
 
+	/**
+	 * Test writing 24 bits
+	 * @throws IOException 
+	 */
+	@Test
+	public void testBits24() throws IOException {
+
+		byte[] expected = { (byte)0xff, (byte)0xff, (byte)0xff };
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+		BitOutputStream outputStream = new BitOutputStream (byteArrayOutputStream);
+
+		outputStream.writeBits (24, 0xffffff);
+
+		outputStream.flush();
+		assertArrayEquals (expected, byteArrayOutputStream.toByteArray());
+
+	}
+
 	// Integer
 
 	/**
@@ -218,5 +236,24 @@ public class TestBitOutputStream {
 
 	}
 
+
+	/**
+	 * Test writing an integer
+	 * @throws IOException 
+	 */
+	@Test
+	public void testWriteMasking() throws IOException {
+
+		byte[] expected = { 0x01, (byte)0xff, (byte)0xff };
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+		BitOutputStream outputStream = new BitOutputStream (byteArrayOutputStream);
+
+		outputStream.writeBits (7, 0);
+		outputStream.writeBits (17, 0xfffff);
+
+		outputStream.flush();
+		assertArrayEquals (expected, byteArrayOutputStream.toByteArray());
+
+	}
 
 }
