@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -238,6 +239,36 @@ public class TestBZip2OutputStream {
 
 
 	/**
+	 * Test coverage : InputStream throws an exception during BZip2InputStream.close()
+	 * @throws IOException 
+	 */
+	@Test(expected=IOException.class)
+	public void testExceptionDuringClose() throws IOException {
+
+		byte[] testData = "Mary had a little lamb, its fleece was white as snow".getBytes();
+
+		// Compress
+		ByteArrayOutputStream byteOutput = new ByteArrayOutputStream();
+		BZip2OutputStream output = new BZip2OutputStream (byteOutput);
+		output.write (testData);
+		output.close();
+
+		// Decompress
+		ByteArrayInputStream byteInput = new ByteArrayInputStream (byteOutput.toByteArray()) {
+			@Override
+			public void close() throws IOException {
+				throw new IOException();
+			}
+		};
+		BZip2InputStream input = new BZip2InputStream (byteInput, false);
+
+		// Test
+		input.close();
+
+	}
+
+
+	/**
 	 * @throws IOException 
 	 */
 	@Test
@@ -341,6 +372,36 @@ public class TestBZip2OutputStream {
 		}
 
 		fail();
+
+	}
+
+
+	/**
+	 * Test coverage : OutputStream throws an exception during BZip2OutputStream.close()
+	 * @throws IOException 
+	 */
+	@Test(expected=IOException.class)
+	public void testExceptionDuringFinish() throws IOException {
+
+		byte[] testData = new byte[] { 'A' };
+
+		// Compress
+		OutputStream byteOutput = new OutputStream() {
+
+			private int count = 0;
+			@Override
+			public void write (int b) throws IOException {
+				if (++this.count == 35) {
+					throw new IOException();
+				}
+			}
+
+		};
+
+		BZip2OutputStream output = new BZip2OutputStream (byteOutput);
+		output.write (testData);
+		output.close();
+
 
 	}
 
@@ -1102,4 +1163,32 @@ public class TestBZip2OutputStream {
 
 	}
 
+
+	/**
+	 * @throws IOException 
+	 */
+	@Test
+	public void testCompressionBug1() throws IOException {
+
+		byte[] testData = new byte [4];
+
+		// Compress
+		ByteArrayOutputStream byteOutput = new ByteArrayOutputStream();
+		BZip2OutputStream output = new BZip2OutputStream (byteOutput);
+		output.write (testData);
+		output.close();
+
+		// Decompress
+		ByteArrayInputStream byteInput = new ByteArrayInputStream (byteOutput.toByteArray());
+		BZip2InputStream input = new BZip2InputStream (byteInput, false);
+		byte[] decodedTestData = new byte [testData.length];
+		input.read (decodedTestData, 0, decodedTestData.length);
+
+		// Compare
+		assertArrayEquals (testData, decodedTestData);
+		assertEquals (-1, input.read());
+
+	}
+
+	// TODO Test BZip2BlockCompressor#close write run at block limit
 }
