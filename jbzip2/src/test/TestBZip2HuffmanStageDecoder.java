@@ -36,4 +36,31 @@ public class TestBZip2HuffmanStageDecoder {
 
 	}
 
+
+	/**
+	 * Tests that an exception is thrown when there is data beyond the available selectors
+	 * @throws Exception
+	 */
+	@Test(expected=IOException.class)
+	public void testExceptionOnTooMuchData() throws Exception {
+
+		byte[][] tableCodeLengths = { { 1, 1 } };
+		byte[] selectors = new byte[1];
+
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		BitOutputStream bitOutputStream = new BitOutputStream (outputStream);
+		for (int i = 0; i < 51; i++) {
+			bitOutputStream.writeBits (1, 0);
+		}
+		bitOutputStream.flush();
+
+		BitInputStream bitInputStream = new BitInputStream (new ByteArrayInputStream (outputStream.toByteArray()));
+		BZip2HuffmanStageDecoder decoder = new BZip2HuffmanStageDecoder (bitInputStream, tableCodeLengths[0].length, tableCodeLengths, selectors);
+
+		for (int i = 0; i < 51; i++) {
+			decoder.nextSymbol();
+		}
+
+	}
+
 }
