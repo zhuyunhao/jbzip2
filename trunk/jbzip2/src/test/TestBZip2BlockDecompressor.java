@@ -7,8 +7,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import org.itadaki.bzip2.BZip2BlockDecompressor;
-import org.itadaki.bzip2.BitInputStream;
-import org.itadaki.bzip2.BitOutputStream;
+import org.itadaki.bzip2.BZip2BitInputStream;
+import org.itadaki.bzip2.BZip2BitOutputStream;
 import org.junit.Test;
 
 /**
@@ -24,7 +24,7 @@ public class TestBZip2BlockDecompressor {
 	public void testErrorZeroTables() throws Exception {
 
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		BitOutputStream bitOutputStream = new BitOutputStream (outputStream);
+		BZip2BitOutputStream bitOutputStream = new BZip2BitOutputStream (outputStream);
 		bitOutputStream.writeInteger (0); // block CRC
 		bitOutputStream.writeBoolean (false); // randomisation
 		bitOutputStream.writeBits (24, 0); // start pointer
@@ -33,7 +33,7 @@ public class TestBZip2BlockDecompressor {
 		bitOutputStream.writeBits (15, 1); // total selectors
 		bitOutputStream.flush();
 
-		BitInputStream bitInputStream = new BitInputStream (new ByteArrayInputStream (outputStream.toByteArray()));
+		BZip2BitInputStream bitInputStream = new BZip2BitInputStream (new ByteArrayInputStream (outputStream.toByteArray()));
 
 		try {
 			new BZip2BlockDecompressor (bitInputStream, 900000);
@@ -53,7 +53,7 @@ public class TestBZip2BlockDecompressor {
 	public void testErrorOneTable() throws Exception {
 
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		BitOutputStream bitOutputStream = new BitOutputStream (outputStream);
+		BZip2BitOutputStream bitOutputStream = new BZip2BitOutputStream (outputStream);
 		bitOutputStream.writeInteger (0); // block CRC
 		bitOutputStream.writeBoolean (false); // randomisation
 		bitOutputStream.writeBits (24, 0); // start pointer
@@ -62,7 +62,7 @@ public class TestBZip2BlockDecompressor {
 		bitOutputStream.writeBits (15, 1); // total selectors
 		bitOutputStream.flush();
 
-		BitInputStream bitInputStream = new BitInputStream (new ByteArrayInputStream (outputStream.toByteArray()));
+		BZip2BitInputStream bitInputStream = new BZip2BitInputStream (new ByteArrayInputStream (outputStream.toByteArray()));
 
 		try {
 			new BZip2BlockDecompressor (bitInputStream, 900000);
@@ -82,7 +82,7 @@ public class TestBZip2BlockDecompressor {
 	public void tesErrortSevenTables() throws Exception {
 
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		BitOutputStream bitOutputStream = new BitOutputStream (outputStream);
+		BZip2BitOutputStream bitOutputStream = new BZip2BitOutputStream (outputStream);
 		bitOutputStream.writeInteger (0); // block CRC
 		bitOutputStream.writeBoolean (false); // randomisation
 		bitOutputStream.writeBits (24, 0); // start pointer
@@ -91,7 +91,7 @@ public class TestBZip2BlockDecompressor {
 		bitOutputStream.writeBits (15, 1); // total selectors
 		bitOutputStream.flush();
 
-		BitInputStream bitInputStream = new BitInputStream (new ByteArrayInputStream (outputStream.toByteArray()));
+		BZip2BitInputStream bitInputStream = new BZip2BitInputStream (new ByteArrayInputStream (outputStream.toByteArray()));
 
 		try {
 			new BZip2BlockDecompressor (bitInputStream, 900000);
@@ -110,7 +110,7 @@ public class TestBZip2BlockDecompressor {
 	public void testErrorZeroSelectors() throws Exception {
 
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		BitOutputStream bitOutputStream = new BitOutputStream (outputStream);
+		BZip2BitOutputStream bitOutputStream = new BZip2BitOutputStream (outputStream);
 		bitOutputStream.writeInteger (0); // block CRC
 		bitOutputStream.writeBoolean (false); // randomisation
 		bitOutputStream.writeBits (24, 0); // start pointer
@@ -119,7 +119,7 @@ public class TestBZip2BlockDecompressor {
 		bitOutputStream.writeBits (15, 0); // total selectors
 		bitOutputStream.flush();
 
-		BitInputStream bitInputStream = new BitInputStream (new ByteArrayInputStream (outputStream.toByteArray()));
+		BZip2BitInputStream bitInputStream = new BZip2BitInputStream (new ByteArrayInputStream (outputStream.toByteArray()));
 
 		try {
 			new BZip2BlockDecompressor (bitInputStream, 900000);
@@ -139,7 +139,7 @@ public class TestBZip2BlockDecompressor {
 	public void testErrorTooManySelectors() throws Exception {
 
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		BitOutputStream bitOutputStream = new BitOutputStream (outputStream);
+		BZip2BitOutputStream bitOutputStream = new BZip2BitOutputStream (outputStream);
 		bitOutputStream.writeInteger (0); // block CRC
 		bitOutputStream.writeBoolean (false); // randomisation
 		bitOutputStream.writeBits (24, 0); // start pointer
@@ -148,7 +148,7 @@ public class TestBZip2BlockDecompressor {
 		bitOutputStream.writeBits (15, 18002); // total selectors
 		bitOutputStream.flush();
 
-		BitInputStream bitInputStream = new BitInputStream (new ByteArrayInputStream (outputStream.toByteArray()));
+		BZip2BitInputStream bitInputStream = new BZip2BitInputStream (new ByteArrayInputStream (outputStream.toByteArray()));
 
 		try {
 			new BZip2BlockDecompressor (bitInputStream, 900000);

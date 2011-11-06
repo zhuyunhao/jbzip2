@@ -5,13 +5,13 @@ import static org.junit.Assert.*;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
-import org.itadaki.bzip2.BitInputStream;
+import org.itadaki.bzip2.BZip2BitInputStream;
 import org.junit.Test;
 
 /**
  * Tests BitInputStream
  */
-public class TestBitInputStream {
+public class TestBZip2BitInputStream {
 
 	// Boolean
 
@@ -23,7 +23,7 @@ public class TestBitInputStream {
 	public void testBooleanFalse8() throws IOException {
 
 		byte[] testData = { 0 };
-		BitInputStream inputStream = new BitInputStream (new ByteArrayInputStream (testData));
+		BZip2BitInputStream inputStream = new BZip2BitInputStream (new ByteArrayInputStream (testData));
 
 		for (int i = 0; i < 8; i++) {
 			assertFalse (inputStream.readBoolean());
@@ -40,7 +40,7 @@ public class TestBitInputStream {
 	public void testBooleanTrue8() throws IOException {
 
 		byte[] testData = { (byte)0xff };
-		BitInputStream inputStream = new BitInputStream (new ByteArrayInputStream (testData));
+		BZip2BitInputStream inputStream = new BZip2BitInputStream (new ByteArrayInputStream (testData));
 
 		for (int i = 0; i < 8; i++) {
 			assertTrue (inputStream.readBoolean());
@@ -59,7 +59,7 @@ public class TestBitInputStream {
 		for (int i = 0; i < 8; i++) {
 
 			byte[] testData = { (byte)(1 << (7 - i)) };
-			BitInputStream inputStream = new BitInputStream (new ByteArrayInputStream (testData));
+			BZip2BitInputStream inputStream = new BZip2BitInputStream (new ByteArrayInputStream (testData));
 	
 			for (int j = 0; j < 8; j++) {
 				if (j == i) {
@@ -82,7 +82,7 @@ public class TestBitInputStream {
 	public void testBooleanEndOfStream() throws IOException {
 
 		byte[] testData = { };
-		BitInputStream inputStream = new BitInputStream (new ByteArrayInputStream (testData));
+		BZip2BitInputStream inputStream = new BZip2BitInputStream (new ByteArrayInputStream (testData));
 
 		inputStream.readBoolean();
 
@@ -99,7 +99,7 @@ public class TestBitInputStream {
 	public void testUnaryZero() throws IOException {
 
 		byte[] testData = { 0x00 };
-		BitInputStream inputStream = new BitInputStream (new ByteArrayInputStream (testData));
+		BZip2BitInputStream inputStream = new BZip2BitInputStream (new ByteArrayInputStream (testData));
 
 		assertEquals (0, inputStream.readUnary());
 
@@ -113,7 +113,7 @@ public class TestBitInputStream {
 	public void testUnaryOne() throws IOException {
 
 		byte[] testData = { (byte)(1 << 7) };
-		BitInputStream inputStream = new BitInputStream (new ByteArrayInputStream (testData));
+		BZip2BitInputStream inputStream = new BZip2BitInputStream (new ByteArrayInputStream (testData));
 
 		assertEquals (1, inputStream.readUnary());
 
@@ -128,7 +128,7 @@ public class TestBitInputStream {
 	public void testUnary31() throws IOException {
 
 		byte[] testData = { (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xfe };
-		BitInputStream inputStream = new BitInputStream (new ByteArrayInputStream (testData));
+		BZip2BitInputStream inputStream = new BZip2BitInputStream (new ByteArrayInputStream (testData));
 
 		assertEquals (31, inputStream.readUnary());
 
@@ -143,7 +143,7 @@ public class TestBitInputStream {
 	public void testUnaryEndOfStream() throws IOException {
 
 		byte[] testData = { };
-		BitInputStream inputStream = new BitInputStream (new ByteArrayInputStream (testData));
+		BZip2BitInputStream inputStream = new BZip2BitInputStream (new ByteArrayInputStream (testData));
 
 		inputStream.readUnary();
 
@@ -159,7 +159,7 @@ public class TestBitInputStream {
 	public void testBits1_0() throws IOException {
 
 		byte[] testData = { (byte)0x00 };
-		BitInputStream inputStream = new BitInputStream (new ByteArrayInputStream (testData));
+		BZip2BitInputStream inputStream = new BZip2BitInputStream (new ByteArrayInputStream (testData));
 
 		assertEquals (0, inputStream.readBits(1));
 
@@ -173,7 +173,7 @@ public class TestBitInputStream {
 	public void testBits1_1() throws IOException {
 
 		byte[] testData = { (byte)(1 << 7) };
-		BitInputStream inputStream = new BitInputStream (new ByteArrayInputStream (testData));
+		BZip2BitInputStream inputStream = new BZip2BitInputStream (new ByteArrayInputStream (testData));
 
 		assertEquals (1, inputStream.readBits(1));
 
@@ -188,7 +188,7 @@ public class TestBitInputStream {
 	public void testBits23() throws IOException {
 
 		byte[] testData = { 0x02, 0x03, 0x04 };
-		BitInputStream inputStream = new BitInputStream (new ByteArrayInputStream (testData));
+		BZip2BitInputStream inputStream = new BZip2BitInputStream (new ByteArrayInputStream (testData));
 
 		assertEquals (0x020304 >> 1, inputStream.readBits(23));
 
@@ -203,7 +203,7 @@ public class TestBitInputStream {
 	public void testBitsEndOfStream() throws IOException {
 
 		byte[] testData = { };
-		BitInputStream inputStream = new BitInputStream (new ByteArrayInputStream (testData));
+		BZip2BitInputStream inputStream = new BZip2BitInputStream (new ByteArrayInputStream (testData));
 
 		inputStream.readBits(1);
 
@@ -220,7 +220,7 @@ public class TestBitInputStream {
 	public void testInteger() throws IOException {
 
 		byte[] testData = { 0x12, 0x34, 0x56, 0x78 };
-		BitInputStream inputStream = new BitInputStream (new ByteArrayInputStream (testData));
+		BZip2BitInputStream inputStream = new BZip2BitInputStream (new ByteArrayInputStream (testData));
 
 		assertEquals (0x12345678, inputStream.readInteger());
 
@@ -235,7 +235,7 @@ public class TestBitInputStream {
 	public void testIntegerEndOfStream() throws IOException {
 
 		byte[] testData = { };
-		BitInputStream inputStream = new BitInputStream (new ByteArrayInputStream (testData));
+		BZip2BitInputStream inputStream = new BZip2BitInputStream (new ByteArrayInputStream (testData));
 
 		inputStream.readInteger();
 
