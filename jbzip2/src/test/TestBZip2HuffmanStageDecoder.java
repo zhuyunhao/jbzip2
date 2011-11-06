@@ -5,8 +5,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import org.itadaki.bzip2.BZip2HuffmanStageDecoder;
-import org.itadaki.bzip2.BitInputStream;
-import org.itadaki.bzip2.BitOutputStream;
+import org.itadaki.bzip2.BZip2BitInputStream;
+import org.itadaki.bzip2.BZip2BitOutputStream;
 import org.junit.Test;
 
 /**
@@ -25,11 +25,11 @@ public class TestBZip2HuffmanStageDecoder {
 		byte[] selectors = new byte[1024];
 
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		BitOutputStream bitOutputStream = new BitOutputStream (outputStream);
+		BZip2BitOutputStream bitOutputStream = new BZip2BitOutputStream (outputStream);
 		bitOutputStream.writeBits (23, 8388607); // This value would be the 4th 23-length code
 		bitOutputStream.flush();
 
-		BitInputStream bitInputStream = new BitInputStream (new ByteArrayInputStream (outputStream.toByteArray()));
+		BZip2BitInputStream bitInputStream = new BZip2BitInputStream (new ByteArrayInputStream (outputStream.toByteArray()));
 		BZip2HuffmanStageDecoder decoder = new BZip2HuffmanStageDecoder (bitInputStream, tableCodeLengths[0].length, tableCodeLengths, selectors);
 
 		decoder.nextSymbol();
@@ -48,13 +48,13 @@ public class TestBZip2HuffmanStageDecoder {
 		byte[] selectors = new byte[1];
 
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		BitOutputStream bitOutputStream = new BitOutputStream (outputStream);
+		BZip2BitOutputStream bitOutputStream = new BZip2BitOutputStream (outputStream);
 		for (int i = 0; i < 51; i++) {
 			bitOutputStream.writeBits (1, 0);
 		}
 		bitOutputStream.flush();
 
-		BitInputStream bitInputStream = new BitInputStream (new ByteArrayInputStream (outputStream.toByteArray()));
+		BZip2BitInputStream bitInputStream = new BZip2BitInputStream (new ByteArrayInputStream (outputStream.toByteArray()));
 		BZip2HuffmanStageDecoder decoder = new BZip2HuffmanStageDecoder (bitInputStream, tableCodeLengths[0].length, tableCodeLengths, selectors);
 
 		for (int i = 0; i < 51; i++) {

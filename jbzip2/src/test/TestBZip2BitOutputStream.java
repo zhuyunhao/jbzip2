@@ -5,13 +5,13 @@ import static org.junit.Assert.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import org.itadaki.bzip2.BitOutputStream;
+import org.itadaki.bzip2.BZip2BitOutputStream;
 import org.junit.Test;
 
 /**
  * Tests BitOutputStream
  */
-public class TestBitOutputStream {
+public class TestBZip2BitOutputStream {
 
 	// Boolean
 
@@ -24,7 +24,7 @@ public class TestBitOutputStream {
 
 		byte[] expected = { 0 };
 		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-		BitOutputStream outputStream = new BitOutputStream (byteArrayOutputStream);
+		BZip2BitOutputStream outputStream = new BZip2BitOutputStream (byteArrayOutputStream);
 
 		for (int i = 0; i < 8; i++) {
 			outputStream.writeBoolean (false);
@@ -45,7 +45,7 @@ public class TestBitOutputStream {
 
 		byte[] expected = { (byte)0xff };
 		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-		BitOutputStream outputStream = new BitOutputStream (byteArrayOutputStream);
+		BZip2BitOutputStream outputStream = new BZip2BitOutputStream (byteArrayOutputStream);
 
 		for (int i = 0; i < 8; i++) {
 			outputStream.writeBoolean (true);
@@ -68,7 +68,7 @@ public class TestBitOutputStream {
 
 			byte[] expected = { (byte)(1 << (7 - i)) };
 			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-			BitOutputStream outputStream = new BitOutputStream (byteArrayOutputStream);
+			BZip2BitOutputStream outputStream = new BZip2BitOutputStream (byteArrayOutputStream);
 	
 			for (int j = 0; j < 8; j++) {
 				outputStream.writeBoolean (j == i);
@@ -93,7 +93,7 @@ public class TestBitOutputStream {
 
 		byte[] expected = { 0x00 };
 		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-		BitOutputStream outputStream = new BitOutputStream (byteArrayOutputStream);
+		BZip2BitOutputStream outputStream = new BZip2BitOutputStream (byteArrayOutputStream);
 
 		outputStream.writeUnary (0);
 
@@ -111,7 +111,7 @@ public class TestBitOutputStream {
 
 		byte[] expected = { (byte)(1 << 7) };
 		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-		BitOutputStream outputStream = new BitOutputStream (byteArrayOutputStream);
+		BZip2BitOutputStream outputStream = new BZip2BitOutputStream (byteArrayOutputStream);
 
 		outputStream.writeUnary (1);
 
@@ -130,7 +130,7 @@ public class TestBitOutputStream {
 
 		byte[] expected = { (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xfe };
 		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-		BitOutputStream outputStream = new BitOutputStream (byteArrayOutputStream);
+		BZip2BitOutputStream outputStream = new BZip2BitOutputStream (byteArrayOutputStream);
 
 		outputStream.writeUnary (31);
 
@@ -151,7 +151,7 @@ public class TestBitOutputStream {
 
 		byte[] expected = { (byte)0x00 };
 		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-		BitOutputStream outputStream = new BitOutputStream (byteArrayOutputStream);
+		BZip2BitOutputStream outputStream = new BZip2BitOutputStream (byteArrayOutputStream);
 
 		outputStream.writeBits (1, 0);
 
@@ -169,7 +169,7 @@ public class TestBitOutputStream {
 
 		byte[] expected = { (byte)(1 << 7) };
 		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-		BitOutputStream outputStream = new BitOutputStream (byteArrayOutputStream);
+		BZip2BitOutputStream outputStream = new BZip2BitOutputStream (byteArrayOutputStream);
 
 		outputStream.writeBits (1, 1);
 
@@ -188,7 +188,7 @@ public class TestBitOutputStream {
 
 		byte[] expected = { 0x02, 0x03, 0x04 };
 		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-		BitOutputStream outputStream = new BitOutputStream (byteArrayOutputStream);
+		BZip2BitOutputStream outputStream = new BZip2BitOutputStream (byteArrayOutputStream);
 
 		outputStream.writeBits (23, 0x020304 >> 1);
 
@@ -207,7 +207,7 @@ public class TestBitOutputStream {
 
 		byte[] expected = { (byte)0xff, (byte)0xff, (byte)0xff };
 		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-		BitOutputStream outputStream = new BitOutputStream (byteArrayOutputStream);
+		BZip2BitOutputStream outputStream = new BZip2BitOutputStream (byteArrayOutputStream);
 
 		outputStream.writeBits (24, 0xffffff);
 
@@ -226,7 +226,7 @@ public class TestBitOutputStream {
 
 		byte[] expected = { 0x01, (byte)0xff, (byte)0xff };
 		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-		BitOutputStream outputStream = new BitOutputStream (byteArrayOutputStream);
+		BZip2BitOutputStream outputStream = new BZip2BitOutputStream (byteArrayOutputStream);
 
 		outputStream.writeBits (7, 0);
 		outputStream.writeBits (17, 0xfffff);
@@ -248,7 +248,7 @@ public class TestBitOutputStream {
 
 		byte[] expected = { 0x12, 0x34, 0x56, 0x78 };
 		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-		BitOutputStream outputStream = new BitOutputStream (byteArrayOutputStream);
+		BZip2BitOutputStream outputStream = new BZip2BitOutputStream (byteArrayOutputStream);
 
 		outputStream.writeInteger(0x12345678);
 
